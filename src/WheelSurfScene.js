@@ -11,9 +11,11 @@ var WheelSurfLayer = cc.Layer.extend({
     targetPoint:null,
     startBtn:null,
     chooseNum:null,
+    isEnabledClicked:null,
     ctor:function () {
         this._super();
         var size = cc.winSize;
+        this.isEnabledClicked = true;
 
         this.mainBg = new cc.Sprite(res.MainBackground_png);
         this.mainBg.attr({
@@ -76,6 +78,7 @@ var WheelSurfLayer = cc.Layer.extend({
         this.wheelEmpty.addChild(this.originalPoint, 7);
 
         this.initPos(184);
+
 
 
 
@@ -151,29 +154,33 @@ var WheelSurfLayer = cc.Layer.extend({
 
     },
     onStartCallback:function(sender){
-        this.startBtn.isEnabled = false;
-        chooseNum = Math.ceil(Math.random() * 10)
-        var callback = cc.callFunc(this.onEndCallback, this);
-        var rotateSequence = cc.sequence(
-            this.getBaseSequenceActionWithcircleId(10),
-            this.getBaseSequenceActionWithcircleId(10),
-            this.getBaseSequenceActionWithcircleId(10),
-            this.getBaseSequenceActionWithcircleId(10),
-            this.getBaseSequenceActionWithcircleId(10),
-            this.getBaseSequenceActionWithcircleId(chooseNum),
-            callback
-        );
+        if(this.isEnabledClicked)
+        {
+            this.isEnabledClicked = false;
+            chooseNum = Math.ceil(Math.random() * 10)
+            var callback = cc.callFunc(this.onEndCallback, this);
+            var rotateSequence = cc.sequence(
+                this.getBaseSequenceActionWithcircleId(10),
+                this.getBaseSequenceActionWithcircleId(10),
+                this.getBaseSequenceActionWithcircleId(10),
+                this.getBaseSequenceActionWithcircleId(10),
+                this.getBaseSequenceActionWithcircleId(10),
+                this.getBaseSequenceActionWithcircleId(chooseNum),
+                callback
+            );
 
-        rotateSequence.clone().easing(cc.easeOut(2.0));
-        // var easeOut = cc.easeOut(rotateSequence,2);
-        //easeOut.setTag(1111);
-        this.targetPoint.runAction(rotateSequence);
+            rotateSequence.clone().easing(cc.easeOut(2.0));
+            // var easeOut = cc.easeOut(rotateSequence,2);
+            //easeOut.setTag(1111);
+            this.targetPoint.runAction(rotateSequence);
+        }
+
 
 
 
     },
     onEndCallback:function(sender){
-        this.startBtn.isEnabled = true;
+        this.isEnabledClicked = true;
     }
 
 });

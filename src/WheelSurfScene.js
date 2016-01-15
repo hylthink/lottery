@@ -138,7 +138,7 @@ var WheelSurfLayer = cc.Layer.extend({
     },
     getBaseSequenceActionWithcircleId:function(index, total){
 
-        var delayTime = 0.1;
+        var delayTime = 0.05;
         var actionArray = new Array();
         for (var i = index;i < index + total; i++)
         {
